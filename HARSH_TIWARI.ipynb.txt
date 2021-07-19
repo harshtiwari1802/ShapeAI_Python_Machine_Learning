@@ -1,0 +1,180 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "HARSH_TIWARI.ipynb",
+      "provenance": [],
+      "collapsed_sections": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "zIr4iOfYo2C6"
+      },
+      "source": [
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import sklearn"
+      ],
+      "execution_count": 45,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "pkAXfbwRsTYa"
+      },
+      "source": [
+        "from sklearn.datasets import load_boston\n",
+        "df=load_boston()"
+      ],
+      "execution_count": 46,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Io3VlFB2ss1U"
+      },
+      "source": [
+        "df.keys()        "
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "HML44BtdvmuG"
+      },
+      "source": [
+        "print(df.DESCR)   "
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "0mrzqTFXxyi8"
+      },
+      "source": [
+        "boston=pd.DataFrame(df.data,columns=df.feature_names) \n",
+        "boston.head()"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "7TAiZLbFyRi2"
+      },
+      "source": [
+        "boston['MEDV'] = df.target\n",
+        "boston.head()"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ei82Y6Hp1dE3"
+      },
+      "source": [
+        "boston.isnull()"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "hIjd5U4N2XI9"
+      },
+      "source": [
+        "boston.isnull().sum()"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "qibRZ_2OZGsh"
+      },
+      "source": [
+        "from sklearn.model_selection import train_test_split\n",
+        "\n",
+        "x = boston.drop('MEDV' , axis=1)\n",
+        "y = boston['MEDV']\n",
+        "\n",
+        "x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.15 ,random_state =5)\n",
+        "\n",
+        "print(x_train.shape)\n",
+        "print(x_test.shape)\n",
+        "print(y_train.shape)\n",
+        "print(y_test.shape)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "9EQg7N2oyLPd"
+      },
+      "source": [
+        "from sklearn.linear_model import LinearRegression\n",
+        "from sklearn.metrics import mean_squared_error"
+      ],
+      "execution_count": 54,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Sj-S5r99y1Pb"
+      },
+      "source": [
+        "lin_model = LinearRegression()\n",
+        "lin_model.fit(x_train, y_train)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "fCkc6w4SzId-"
+      },
+      "source": [
+        "y_trian_predict = lin_model.predict(x_train)\n",
+        "rmse = (np.sqrt(mean_squared_error(y_train, y_trian_predict)))\n",
+        "\n",
+        "print(\"The model performance for traning set\")\n",
+        "print('RMSE is {}' .format(rmse))\n",
+        "print(\"/n\")\n",
+        "\n",
+        "y_test_predict = lin_model.predict(x_test)\n",
+        "rmse = (np.sqrt(mean_squared_error(y_test, y_test_predict)))\n",
+        "\n",
+        "print(\"The model performance for testing set\")\n",
+        "print('RMSE is {}' .format(rmse))"
+      ],
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
